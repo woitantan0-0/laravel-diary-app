@@ -31,6 +31,18 @@
    origin  <自分のリポジトリのURL> (push)
    ```
 
+1. **push する**
+
+   ```
+   // 変更があれば
+   git add .
+   git commit -m "Merge unrelated histories"
+
+   git push
+   ```
+
+   エラーが出るかも...
+
 1. **docker compose で立ち上げる**  
    ダウンロードしたプロジェクトを使って、必要なプログラム（コンテナと呼ばれる）を自動的に起動します。
 
