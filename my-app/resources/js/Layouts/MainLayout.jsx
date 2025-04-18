@@ -9,7 +9,7 @@ const MainLayout = ({ children, title }) => {
     return (
         <>
             <MenuHeader auth={props.auth} title={title} />
-            <main>{children}</main>
+            <main className="pb-10">{children}</main>
             <MenuFooter />
         </>
     );

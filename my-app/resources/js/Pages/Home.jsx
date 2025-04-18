@@ -1,32 +1,62 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Head, Link } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
+import { Flex, Tabs, Box } from "@chakra-ui/react";
+import HomeContents from "@/Components/Home/HomeContents";
+import ListContents from "@/Components/Home/ListContents";
+import { router } from "@inertiajs/react";
 
 const Home = (props) => {
+    // タブの状態を管理するためのuseStateフックを使用
+    const [tab, setTab] = useState(props.tab);
+    // タブの状態を変更するための関数を定義
+    const handleTabChange = (key, newTab) => {
+        setTab(newTab);
+        switch (key) {
+            case "home":
+                router.get(route("home.index"));
+                break;
+            case "list":
+                router.get(route("home.list"));
+                break;
+            default:
+                break;
+        }
+    };
     return (
         <>
-            <h1>ホームページ</h1>
-            <h2>人気の日記一覧</h2>
-            <ul>
-                {props.popularDiaries.map((diary) => (
-                    <li key={diary.id}>
-                        <Link href={`/diary/${diary.id}`}>{diary.title}</Link>
-                        <p>日付: {diary.target_date}</p>
-                        <p>投稿者: {diary.user.name}</p>
-                        <p>いいね数: {diary.good_count}件</p>
-                    </li>
-                ))}
-            </ul>
-            <h2>最新の日記一覧</h2>
-            <ul>
-                {props.latestDiaries.map((diary) => (
-                    <li key={diary.id}>
-                        <Link href={`/diary/${diary.id}`}>{diary.title}</Link>
-                        <p>日付: {diary.target_date}</p>
-                        <p>投稿者: {diary.user.name}</p>
-                    </li>
-                ))}
-            </ul>
+            <Box pt={5} px={5} bg="cyan.50">
+                <Tabs.Root
+                    maxW="md"
+                    fitted
+                    defaultValue={props.tab}
+                    bg="cyan.50"
+                >
+                    <Tabs.List>
+                        <Tabs.Trigger
+                            value="home"
+                            onClick={handleTabChange.bind(null, "home")}
+                        >
+                            HOME
+                        </Tabs.Trigger>
+                        <Tabs.Trigger
+                            value="list"
+                            onClick={handleTabChange.bind(null, "list")}
+                        >
+                            LIST
+                        </Tabs.Trigger>
+                    </Tabs.List>
+                </Tabs.Root>
+            </Box>
+
+            {props.tab == "list" ? (
+                <ListContents diaries={props.diaries} />
+            ) : (
+                <HomeContents
+                    popularDiaries={props.popularDiaries}
+                    latestDiaries={props.latestDiaries}
+                />
+            )}
         </>
     );
 };

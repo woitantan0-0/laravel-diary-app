@@ -52,3 +52,10 @@ services:
   #     - 8081:80
   #   volumes:
   #     - /sessions
+
+  mail:
+    image: mailhog/mailhog
+    container_name: "mailh"
+    # ポートフォワードの指定（ホスト側ポート：コンテナ側ポート）
+    ports:
+      - 8025:8025

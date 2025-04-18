@@ -29,6 +29,25 @@ class HomeController extends Controller
         return Inertia::render('Home', [
             'popularDiaries' => $popularDiaries,
             'latestDiaries' => $latestDiaries,
+            'tab' => 'home',
+        ]);
+    }
+
+    /**
+     * ホームページの一覧表示機能
+     */
+    public function list()
+    {
+        // 人気の日記一覧を取得
+        $diaries = Diary::with('user')
+            ->orderBy('good_count', 'desc')
+            ->take(100)
+            ->get();
+
+        // ビューにデータを渡す
+        return Inertia::render('Home', [
+            'diaries' => $diaries,
+            'tab' => 'list',
         ]);
     }
 }
