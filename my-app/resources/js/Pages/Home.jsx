@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Head, Link } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
-import { Flex, Tabs, Box } from "@chakra-ui/react";
+import { Tabs, Box } from "@chakra-ui/react";
 import HomeContents from "@/Components/Home/HomeContents";
 import ListContents from "@/Components/Home/ListContents";
 import { router } from "@inertiajs/react";
@@ -50,7 +49,7 @@ const Home = (props) => {
             </Box>
 
             {props.tab == "list" ? (
-                <ListContents diaries={props.diaries} />
+                <ListContents diaries={props.diaries} search={props.search} />
             ) : (
                 <HomeContents
                     popularDiaries={props.popularDiaries}

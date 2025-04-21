@@ -36,18 +36,33 @@ class HomeController extends Controller
     /**
      * ホームページの一覧表示機能
      */
-    public function list()
+    public function list(Request $request)
     {
+        // getパラメータの取得
+        $search = $request->input('search');
+
         // 人気の日記一覧を取得
-        $diaries = Diary::with('user')
+        $query = Diary::with('user');
+
+        // 検索条件の追加
+        if ($search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%")
+                      ->orWhere('body', 'like', "%{$search}%")
+                      ->orWhere('target_date', 'like', "%{$search}%");
+            });
+        }
+        // 検索結果を取得
+        $diaries = $query
             ->orderBy('good_count', 'desc')
-            ->take(100)
-            ->get();
+            ->orderBy('id', 'asc')
+            ->paginate(10);
 
         // ビューにデータを渡す
         return Inertia::render('Home', [
             'diaries' => $diaries,
             'tab' => 'list',
+            'search' => $search,
         ]);
     }
 }

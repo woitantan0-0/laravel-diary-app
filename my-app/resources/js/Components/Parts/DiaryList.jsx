@@ -1,8 +1,26 @@
-import React from "react";
-import { Link } from "@inertiajs/react";
-import { Flex, Box } from "@chakra-ui/react";
+import React, { useEffect } from "react";
+import { Link, router } from "@inertiajs/react";
+import { Flex, Box, HStack, Button } from "@chakra-ui/react";
 
 const DiaryList = (props) => {
+    const handlePageCange = (url) => {
+        if (url) {
+            const routerUrl = props.searchText
+                ? `${url}&search=${props.searchText}`
+                : url;
+            router.get(routerUrl);
+        }
+    };
+
+    const getButtonLabel = (label) => {
+        if (label.includes("pre")) {
+            return "前へ";
+        } else if (label.includes("next")) {
+            return "次へ";
+        }
+        return label;
+    };
+
     return (
         <>
             <Flex pt={10} pb={5}>
@@ -16,7 +34,7 @@ const DiaryList = (props) => {
                 </h2>
             </Flex>
 
-            {props.diaries.length > 0 ? (
+            {props.diaries && props.diaries.length > 0 ? (
                 <ul className="p-3">
                     {props.diaries.map((diary) => (
                         <li
@@ -25,7 +43,7 @@ const DiaryList = (props) => {
                         >
                             <Link
                                 href={`/diary/${diary.id}`}
-                                className="text-2xl font-bold text-black my-3 hover:text-blue-500"
+                                className="text-2xl font-bold text-black my-3 hover:text-pink-300"
                             >
                                 {diary.title}
                             </Link>
@@ -39,6 +57,22 @@ const DiaryList = (props) => {
                 </ul>
             ) : (
                 <Box p={5}>投稿はまだありません</Box>
+            )}
+
+            {props.pageData && props.pageData.links.length > 0 && (
+                <HStack>
+                    {props.pageData.links.map((link, index) => (
+                        <Button
+                            key={index}
+                            onClick={() => handlePageCange(link.url)}
+                            bg={link.active ? "cyan.200" : "gray.100"}
+                            variant="solid"
+                            px={5}
+                        >
+                            {getButtonLabel(link.label)}
+                        </Button>
+                    ))}
+                </HStack>
             )}
         </>
     );
