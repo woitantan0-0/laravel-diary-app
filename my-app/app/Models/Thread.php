@@ -22,6 +22,16 @@ class Thread extends Model
     ];
 
     /**
+     * 登録日のフォーマットを変えるアクセサメソッド
+     * 
+     * @return string 
+     */
+    public function getCreatedAtAttribute($value)
+    {
+        return date('Y年m月d日', strtotime($value));
+    }
+
+    /**
      * usersテーブルとのリレーション
      */
     public function user()

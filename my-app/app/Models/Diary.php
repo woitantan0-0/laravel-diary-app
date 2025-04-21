@@ -25,6 +25,16 @@ class Diary extends Model
     ];
 
     /**
+     * 日記対象日のフォーマットを変えるアクセサメソッド
+     * 
+     * @return string
+     */
+    public function getTargetDateAttribute($value)
+    {
+        return date('Y年m月d日', strtotime($value));
+    }
+
+    /**
      * usersテーブルとのリレーション
      */
     public function user()
@@ -39,7 +49,7 @@ class Diary extends Model
     {
         return $this->hasMany(Comment::class);
     }
-    
+
     /**
      * threadsテーブルとのリレーション
      */

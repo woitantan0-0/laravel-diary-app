@@ -10,7 +10,11 @@ const MenuHeader = (props) => {
                 <div className="flex lg:col-start-2 lg:justify-center">
                     <Link href="/" className="px-3">
                         <img
-                            src="./image/logoHp.jpeg"
+                            src={
+                                props.imagePass
+                                    ? props.imagePass + "image/logoHp.jpeg"
+                                    : "./image/logoHp.jpeg"
+                            }
                             className="App-logo"
                             alt="logo"
                         />

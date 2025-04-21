@@ -26,5 +26,6 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home.index');
 Route::get('/list', [\App\Http\Controllers\HomeController::class, 'list'])->name('home.list');
+Route::get('/diary/{id}', [\App\Http\Controllers\DiaryController::class, 'detail'])->name('diary.detail');
 
 require __DIR__.'/auth.php';
