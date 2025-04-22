@@ -5,21 +5,20 @@ import ThreadList from "./ThreadList";
 const CommentList = (props) => {
     return (
         <>
-            <Text py={10} px={5} fontSize={"2xl"}>
+            <Text py={10} fontSize={"2xl"}>
                 コメント一覧
             </Text>
             {props.comments.length > 0 ? (
-                <ul className="pl-5">
+                <ul className="pl-1">
                     {props.comments.map((comment) => (
-                        <Box>
-                            <li
-                                key={comment.id}
-                                className="border-b border-gray-300 pb-3 mb-3"
-                            >
+                        <Box key={comment.id}>
+                            <li className="border-b border-gray-300 pb-3 mb-3">
                                 <p>
                                     <strong>{comment.user.name}</strong>
                                 </p>
-                                {comment.comment}
+                                <Text style={{ whiteSpace: "pre-line" }}>
+                                    {comment.comment}
+                                </Text>
                                 <p className="text-gray-500 text-sm">
                                     {comment.created_at}
                                 </p>

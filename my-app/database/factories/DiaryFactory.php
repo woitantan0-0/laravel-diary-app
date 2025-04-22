@@ -21,6 +21,7 @@ class DiaryFactory extends Factory
             'title' => fake()->country() . 'の' . fake()->city() . '旅行',
             'body' => fake()->realText(200),
             'target_date' => fake()->dateTimeBetween('-1 month', '+1 month'),
+            'is_public' => fake()->boolean(),
             'user_id' => User::factory(),
             'good_count' => fake()->numberBetween(0, 100),
             'bad_count' => fake()->numberBetween(0, 100),

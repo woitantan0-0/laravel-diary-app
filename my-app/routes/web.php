@@ -22,6 +22,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/diary/create', [\App\Http\Controllers\DiaryController::class, 'create'])->name('diary.create');
+    Route::post('/diary/store', [\App\Http\Controllers\DiaryController::class, 'store'])->name('diary.store');
 });
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home.index');

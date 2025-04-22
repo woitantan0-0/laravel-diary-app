@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Requests\DiaryRequest;
 
 class Diary extends Model
 {
@@ -19,6 +20,7 @@ class Diary extends Model
         'title',
         'body',
         'target_date',
+        'is_public',
         'user_id',
         'good_count',
         'bad_count',
@@ -56,5 +58,24 @@ class Diary extends Model
     public function threads()
     {
         return $this->hasMany(Thread::class);
+    }
+
+    /**
+     * 日記を登録する
+     * 
+     * @param DiaryRequest $request
+     * @return Diary
+     */
+    public function createDiary(DiaryRequest $request)
+    {
+        $this->title = $request->title;
+        $this->body = $request->body;
+        $this->target_date = $request->target_date;
+        $this->is_public = $request->is_public;
+        $this->user_id = $request->user()->id;
+        $this->good_count = 0;
+        $this->bad_count = 0;
+        $this->save();
+        return $this;
     }
 }

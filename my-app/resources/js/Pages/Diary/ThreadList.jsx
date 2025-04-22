@@ -2,10 +2,6 @@ import React, { useEffect } from "react";
 import { Box, Text } from "@chakra-ui/react";
 
 const ThreadList = (props) => {
-    useEffect(() => {
-        console.log(props);
-    }, [props]);
-
     return (
         <>
             {props.threads.length > 0 && (
@@ -19,7 +15,9 @@ const ThreadList = (props) => {
                                 <p>
                                     <strong>{thread.user.name}</strong>
                                 </p>
-                                {thread.comment}
+                                <Text style={{ whiteSpace: "pre-line" }}>
+                                    {thread.comment}
+                                </Text>
                                 <p className="text-gray-500 text-sm">
                                     {thread.created_at}
                                 </p>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Diary;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -15,12 +16,14 @@ class HomeController extends Controller
     {
         // 人気の日記一覧を20件取得
         $popularDiaries = Diary::with('user')
+            ->where('is_public', 1)
             ->orderBy('good_count', 'desc')
             ->take(20)
             ->get();
         
         // 最新の日記一覧を20件取得
         $latestDiaries = Diary::with('user')
+            ->where('is_public', 1)
             ->orderBy('created_at', 'desc')
             ->take(20)
             ->get();
@@ -40,9 +43,22 @@ class HomeController extends Controller
     {
         // getパラメータの取得
         $search = $request->input('search');
+        // ログインユーザの取得
+        $user = Auth::user();
 
-        // 人気の日記一覧を取得
+        // 公開日記一覧を取得
         $query = Diary::with('user');
+
+        // ログインユーザの投稿した日記はプライベートも取得
+        if ($user) {
+            $query->where(function ($query) use ($user) {
+                $query->where('is_public', 1)
+                      ->orWhere('user_id', $user->id);
+            });
+        } else {
+            // 未ログインユーザは公開日記のみ取得
+            $query->where('is_public', 1);
+        }
 
         // 検索条件の追加
         if ($search) {
@@ -52,9 +68,10 @@ class HomeController extends Controller
                       ->orWhere('target_date', 'like', "%{$search}%");
             });
         }
+
         // 検索結果を取得
         $diaries = $query
-            ->orderBy('good_count', 'desc')
+            ->orderBy('created_at', 'desc')
             ->orderBy('id', 'asc')
             ->paginate(10);
 

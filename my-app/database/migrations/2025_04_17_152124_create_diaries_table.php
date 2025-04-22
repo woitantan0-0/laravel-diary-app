@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('body');
             $table->date('target_date');
+            $table->boolean('is_public')->default(false)->nullable();
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('good_count')->default(0)->nullable();

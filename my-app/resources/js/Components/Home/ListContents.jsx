@@ -22,7 +22,7 @@ const ListContents = (props) => {
                 <InputGroup flex="1" startElement={<LuSearch />}>
                     <Input
                         rounded={6}
-                        placeholder="Search diary. Press enter after typing."
+                        placeholder="さがすよ。エンターおしてね。"
                         onChange={(e) => setSearchText(e.target.value)}
                         onKeyDown={handleSearchEnter}
                         value={searchText}

@@ -1,18 +1,37 @@
 import React, { useEffect } from "react";
+import CommentList from "./CommentList";
 import MainLayout from "@/Layouts/MainLayout";
 import H1Parts from "@/Components/Parts/H1Parts";
-import { Box, HStack, Text } from "@chakra-ui/react";
-import CommentList from "./CommentList";
+import { Box, HStack, Tag } from "@chakra-ui/react";
+import { Toaster, toaster } from "@/Components/ui/toaster";
+import { router } from "@inertiajs/react";
 
 const DiaryDetail = (props) => {
+    useEffect(() => {
+        if (props.message) {
+            toaster.create({
+                title: props.message,
+                type: "success",
+            });
+        }
+    }, []);
+
     return (
         <>
+            <Toaster />
             <Box bg="pink.50">
                 <H1Parts h1Text={props.diary.title} />
-                <Box px={20} py={20}>
+                <Box px={5} py={20}>
+                    <Tag.Root size="md" variant="subtle" colorPalette="cyan">
+                        <Tag.Label>
+                            {props.diary.is_public ? "公開" : "非公開"}
+                        </Tag.Label>
+                    </Tag.Root>
                     <p>ひ：{props.diary.target_date}</p>
                     <p>おなまえ：{props.diary.user.name}</p>
-                    <Box py={10}>{props.diary.body}</Box>
+                    <Box py={10} style={{ whiteSpace: "pre-line" }}>
+                        {props.diary.body}
+                    </Box>
 
                     <HStack>
                         <Box className="flex items-center">
@@ -48,8 +67,19 @@ const DiaryDetail = (props) => {
                     </HStack>
                 </Box>
             </Box>
-            <Box py={5} px={20}>
+            <Box py={5} px={5}>
                 <CommentList comments={props.comments} />
+            </Box>
+            <Box py={5} px={5}>
+                <button
+                    type="button"
+                    className="inline-flex items-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:bg-gray-700"
+                    onClick={() => {
+                        router.get(route("home.list"));
+                    }}
+                >
+                    一覧にもどる
+                </button>
             </Box>
         </>
     );
