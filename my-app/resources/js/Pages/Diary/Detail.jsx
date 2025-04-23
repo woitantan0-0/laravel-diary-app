@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import CommentList from "./CommentList";
+import CommentList from "@/Components/Parts/CommentList";
+import CommentForm from "@/Components/Parts/CommentForm";
 import MainLayout from "@/Layouts/MainLayout";
 import H1Parts from "@/Components/Parts/H1Parts";
 import { Box, Button, HStack, Tag } from "@chakra-ui/react";
@@ -88,6 +89,14 @@ const DiaryDetail = (props) => {
                         )}
                 </Box>
             </Box>
+            {props.auth.user && (
+                <Box py={5} px={5}>
+                    <CommentForm
+                        diaryId={props.diary.id}
+                        errMessage={props.errors}
+                    />
+                </Box>
+            )}
             <Box py={5} px={5}>
                 <CommentList comments={props.comments} />
             </Box>

@@ -12,9 +12,6 @@ import {
 } from "@chakra-ui/react";
 
 const DiaryEdit = (props) => {
-    useEffect(() => {
-        console.log(props);
-    }, []);
     const [diary, setDiary] = useState({
         id: props.diary.id || "",
         title: props.diary.title || "",

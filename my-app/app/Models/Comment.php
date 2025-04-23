@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Requests\CommentRequest;
 
 class Comment extends Model
 {
@@ -53,5 +54,19 @@ class Comment extends Model
     public function threads()
     {
         return $this->hasMany(Thread::class);
+    }
+
+    /**
+     * コメント登録処理
+     * @param \App\Http\Requests\CommentRequest $request
+     * @return Comment
+     */
+    public function createComment(CommentRequest $request): Comment
+    {
+        $this->comment = $request->comment;
+        $this->user_id = $request->user()->id;
+        $this->diary_id = $request->diary_id;
+        $this->save();
+        return $this;
     }
 }

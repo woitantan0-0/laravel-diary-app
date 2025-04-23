@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Box, Text } from "@chakra-ui/react";
-import ThreadList from "./ThreadList";
+import ThreadList from "@/Components/Parts/ThreadList";
 
 const CommentList = (props) => {
     return (
