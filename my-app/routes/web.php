@@ -24,6 +24,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/diary/create', [\App\Http\Controllers\DiaryController::class, 'create'])->name('diary.create');
     Route::post('/diary/store', [\App\Http\Controllers\DiaryController::class, 'store'])->name('diary.store');
+
+    Route::middleware('canUpdate')->group(function () {
+        Route::get('/diary/{id}/edit', [\App\Http\Controllers\DiaryController::class, 'edit'])->name('diary.edit');
+        Route::post('/diary/update', [\App\Http\Controllers\DiaryController::class, 'update'])->name('diary.update');
+    });
 });
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home.index');

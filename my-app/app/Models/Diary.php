@@ -33,7 +33,7 @@ class Diary extends Model
      */
     public function getTargetDateAttribute($value)
     {
-        return date('Y年m月d日', strtotime($value));
+        return date('Y/m/d', strtotime($value));
     }
 
     /**
@@ -76,6 +76,30 @@ class Diary extends Model
         $this->good_count = 0;
         $this->bad_count = 0;
         $this->save();
+        return $this;
+    }
+
+    /**
+     * 日記を更新する
+     * 
+     * @param DiaryRequest $request
+     * @return Diary
+     */
+    public function updateDiary(DiaryRequest $request)
+    {
+        // 対象日記の詳細情報を取得
+        $diary = Diary::with(['user'])
+            ->where('id', $request->id)
+            ->firstOrFail();
+        
+        // 日記の更新
+        $diary->title = $request->title;
+        $diary->body = $request->body;
+        $diary->target_date = $request->target_date;
+        $diary->is_public = $request->is_public;
+        $diary->user_id = $request->user()->id;
+        $diary->save();
+
         return $this;
     }
 }

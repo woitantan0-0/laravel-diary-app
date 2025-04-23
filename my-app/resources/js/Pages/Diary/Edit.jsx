@@ -11,12 +11,16 @@ import {
     HStack,
 } from "@chakra-ui/react";
 
-const DiaryCreate = (props) => {
+const DiaryEdit = (props) => {
+    useEffect(() => {
+        console.log(props);
+    }, []);
     const [diary, setDiary] = useState({
-        title: "",
-        target_date: "",
-        body: "",
-        is_public: false,
+        id: props.diary.id || "",
+        title: props.diary.title || "",
+        target_date: props.diary.target_date_origin || "",
+        body: props.diary.body || "",
+        is_public: props.diary.is_public == 1 ? true : false,
     });
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -27,11 +31,11 @@ const DiaryCreate = (props) => {
     };
     const handleSubmit = (e) => {
         e.preventDefault();
-        router.post(route("diary.store"), diary);
+        router.post(route("diary.update"), diary);
     };
     return (
         <>
-            <H1Parts h1Text="にっきをかく。" />
+            <H1Parts h1Text="にっきのへんしゅう。" />
             <Box py={5} px={5}>
                 <form onSubmit={handleSubmit}>
                     <Field.Root py={3} required invalid={!!props.errors.title}>
@@ -105,6 +109,7 @@ const DiaryCreate = (props) => {
                         bg="cyan.50"
                         variant="outline"
                         colorPalette="cyan"
+                        checked={diary.is_public}
                     >
                         <CheckboxCard.HiddenInput
                             onChange={handleChange}
@@ -129,7 +134,7 @@ const DiaryCreate = (props) => {
                             type="submit"
                             className="inline-flex items-center rounded-md border border-transparent bg-cyan-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 active:bg-cyan-700"
                         >
-                            とうこう！
+                            こうしん！
                         </button>
                         <button
                             type="button"
@@ -147,9 +152,9 @@ const DiaryCreate = (props) => {
     );
 };
 
-DiaryCreate.layout = (page) => (
-    <MainLayout title="にっきをかく。" imagePass="../">
+DiaryEdit.layout = (page) => (
+    <MainLayout title="にっきのへんしゅう。" imagePass="../../">
         {page}
     </MainLayout>
 );
-export default DiaryCreate;
+export default DiaryEdit;

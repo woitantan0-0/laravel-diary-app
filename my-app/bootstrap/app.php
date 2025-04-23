@@ -16,6 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
         ]);
 
+        $middleware->alias([
+            'canUpdate' => \App\Http\Middleware\CheckDiaryUser::class,
+        ]);
+
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
