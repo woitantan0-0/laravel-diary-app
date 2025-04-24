@@ -15,7 +15,7 @@ const DiaryDetail = (props) => {
                 type: "success",
             });
         }
-    }, []);
+    }, [props]);
 
     return (
         <>

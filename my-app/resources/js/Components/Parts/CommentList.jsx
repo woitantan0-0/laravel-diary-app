@@ -65,7 +65,11 @@ const CommentList = (props) => {
                                         )}
                                     </Flex>
                                 </li>
-                                <ThreadList threads={comment.threads} />
+                                <ThreadList
+                                    threads={comment.threads}
+                                    diaryId={comment.diary_id}
+                                    auth={props.auth}
+                                />
                             </Box>
                             <ThreadForm
                                 commentId={comment.id}

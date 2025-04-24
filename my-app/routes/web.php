@@ -31,6 +31,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/diary/{id}/edit', [\App\Http\Controllers\DiaryController::class, 'edit'])->name('diary.edit');
         Route::post('/diary/update', [\App\Http\Controllers\DiaryController::class, 'update'])->name('diary.update');
     });
+
+    Route::middleware('canUpdateComment')->group(function () {
+    });
+
+    Route::middleware('canUpdateThread')->group(function () {
+        Route::post('/diary/{id}/thread/destroy', [\App\Http\Controllers\ThreadController::class, 'destroy'])->name('thread.destroy');
+    });
 });
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('home.index');

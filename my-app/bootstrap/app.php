@@ -18,6 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'canUpdate' => \App\Http\Middleware\CheckDiaryUser::class,
+            'canUpdateComment' => \App\Http\Middleware\CommentDiaryUser::class,
+            'canUpdateThread' => \App\Http\Middleware\ThreadDiaryUser::class,
         ]);
 
         //
