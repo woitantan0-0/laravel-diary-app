@@ -98,7 +98,11 @@ const DiaryDetail = (props) => {
                 </Box>
             )}
             <Box py={5} px={5}>
-                <CommentList comments={props.comments} />
+                <CommentList
+                    comments={props.comments}
+                    auth={props.auth}
+                    errMessage={props.errors}
+                />
             </Box>
             <Box py={5} px={5}>
                 <button

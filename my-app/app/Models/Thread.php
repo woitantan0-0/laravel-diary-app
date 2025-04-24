@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Requests\ThreadRequest;
 
 class Thread extends Model
 {
@@ -28,7 +29,7 @@ class Thread extends Model
      */
     public function getCreatedAtAttribute($value)
     {
-        return date('Y年m月d日', strtotime($value));
+        return date('Y/m/d', strtotime($value));
     }
 
     /**
@@ -45,5 +46,19 @@ class Thread extends Model
     public function comment()
     {
         return $this->belongsTo(Comment::class);
+    }
+
+    /**
+     * スレッド登録処理
+     * @param ThreadRequest $request
+     * @return Thread
+     */
+    public function createThread(ThreadRequest $request)
+    {
+        $this->comment = $request->thread_comment;
+        $this->user_id = $request->user()->id;
+        $this->comment_id = $request->comment_id;
+        $this->save();
+        return $this;
     }
 }

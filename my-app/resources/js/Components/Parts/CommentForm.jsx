@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, Field, Textarea, Button } from "@chakra-ui/react";
+import { Text, Field, Textarea, Button, Box } from "@chakra-ui/react";
 import { router } from "@inertiajs/react";
 
 const CommentForm = (props) => {
@@ -8,10 +8,12 @@ const CommentForm = (props) => {
         diary_id: props.diaryId,
     });
     useEffect(() => {
-        setComment({
-            comment: "",
-            diary_id: props.diaryId,
-        });
+        if (!props.errMessage.comment) {
+            setComment({
+                comment: "",
+                diary_id: props.diaryId,
+            });
+        }
     }, [props]);
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -49,18 +51,20 @@ const CommentForm = (props) => {
                         </Field.ErrorText>
                     )}
                 </Field.Root>
-                <Button
-                    type="submit"
-                    px={5}
-                    bgColor={"cyan.600"}
-                    color={"white"}
-                    fontWeight={"bold"}
-                    _hover={{
-                        bgColor: "cyan.500",
-                    }}
-                >
-                    コメント投稿！
-                </Button>
+                <Box className="text-right">
+                    <Button
+                        type="submit"
+                        px={5}
+                        bgColor={"cyan.600"}
+                        color={"white"}
+                        fontWeight={"bold"}
+                        _hover={{
+                            bgColor: "cyan.500",
+                        }}
+                    >
+                        コメント投稿！
+                    </Button>
+                </Box>
             </form>
         </>
     );

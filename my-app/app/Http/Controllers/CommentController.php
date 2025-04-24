@@ -16,7 +16,6 @@ class CommentController extends Controller
      */
     public function store(CommentRequest $request)
     {
-        // dd($request->user());
         // コメントの登録処理
         $commentModel = new Comment();
         $comment = $commentModel->createComment($request);
