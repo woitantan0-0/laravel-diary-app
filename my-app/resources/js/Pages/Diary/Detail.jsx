@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import CommentList from "@/Components/Parts/CommentList";
 import CommentForm from "@/Components/Parts/CommentForm";
+import DiaryDelete from "@/Components/Parts/DiaryDelete";
 import MainLayout from "@/Layouts/MainLayout";
 import H1Parts from "@/Components/Parts/H1Parts";
 import { Box, Button, HStack, Tag } from "@chakra-ui/react";
@@ -13,6 +14,12 @@ const DiaryDetail = (props) => {
             toaster.create({
                 title: props.message,
                 type: "success",
+            });
+        }
+        if (props.error_message) {
+            toaster.create({
+                title: props.error_message,
+                type: "error",
             });
         }
     }, [props]);
@@ -69,23 +76,26 @@ const DiaryDetail = (props) => {
 
                     {props.auth.user &&
                         props.auth.user.id === props.diary.user_id && (
-                            <Button
-                                type="button"
-                                px={5}
-                                bgColor={"cyan.600"}
-                                color={"white"}
-                                fontWeight={"bold"}
-                                _hover={{
-                                    bgColor: "cyan.500",
-                                }}
-                                onClick={() =>
-                                    router.get(
-                                        route("diary.edit", props.diary.id)
-                                    )
-                                }
-                            >
-                                へんしゅう
-                            </Button>
+                            <HStack gap="4" pt={5}>
+                                <Button
+                                    type="button"
+                                    px={5}
+                                    bgColor={"cyan.600"}
+                                    color={"white"}
+                                    fontWeight={"bold"}
+                                    _hover={{
+                                        bgColor: "cyan.500",
+                                    }}
+                                    onClick={() =>
+                                        router.get(
+                                            route("diary.edit", props.diary.id)
+                                        )
+                                    }
+                                >
+                                    へんしゅう
+                                </Button>
+                                <DiaryDelete diaryId={props.diary.id} />
+                            </HStack>
                         )}
                 </Box>
             </Box>
@@ -109,7 +119,7 @@ const DiaryDetail = (props) => {
                     type="button"
                     className="inline-flex items-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:bg-gray-700"
                     onClick={() => {
-                        router.get(route("home.list"));
+                        router.get(route("home.index"));
                     }}
                 >
                     一覧にもどる

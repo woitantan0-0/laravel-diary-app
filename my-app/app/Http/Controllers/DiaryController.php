@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Models\Diary;
 use App\Models\Comment;
-use Illuminate\Container\Attributes\Auth;
 use Inertia\Inertia;
 use App\Http\Requests\DiaryRequest;
-use Illuminate\Support\Facades\Log;
 
 class DiaryController extends Controller
 {
@@ -32,12 +32,14 @@ class DiaryController extends Controller
         
         // セッションに保存されたメッセージを取得
         $message = session('success');
+        $error_message = session('error');
         
         // ビューにデータを渡す
         return inertia::render('Diary/Detail', [
             'diary' => $diary,
             'comments' => $comments,
             'message' => $message,
+            'error_message' => $error_message,
         ]);
     }
 
@@ -104,5 +106,52 @@ class DiaryController extends Controller
         // リダイレクト
         return redirect()->route('diary.detail', ['id' => $request->id])
             ->with('success', '日記を更新しました。');
+    }
+
+    /**
+     * 返信削除機能
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Request $request)
+    {
+        try {
+            $status = 'error';
+            $message = '日記の削除に失敗しました。';
+            $diary = Diary::find($request->id);
+            if ($diary) {
+                $retryTimes = 3;
+                DB::transaction(function () use ($diary) {
+                    // 日記に紐づくデータを削除
+                    $comments = $diary->comments()->get();
+                    foreach ($comments as $comment) {
+                        // 日記に紐づく返信を削除
+                        $comment->threads()->delete();
+                        // コメント削除
+                        $comment->delete();
+                    }
+                    // 日記削除
+                    $diary->delete();
+                }, $retryTimes);
+                $status = 'success';
+                $message = '日記を削除しました。';
+            } else {
+                // リダイレクト
+                return redirect()->route('diary.detail', ['id' => $request->id])
+                    ->with($status, $message);
+            }
+
+            // 詳細画面にリダイレクト
+            return redirect()
+                ->route('home.index')
+                ->with($status, $message);
+
+        } catch (\Throwable $e) {
+            Log::error('Error DiaryController in destroy: ' . $e->getMessage());
+            // リダイレクト
+            return redirect()->route('diary.detail', ['id' => $request->id])
+                ->with('error', '日記の削除に失敗しました。');
+        }
     }
 }

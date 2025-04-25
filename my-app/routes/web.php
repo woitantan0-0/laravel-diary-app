@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('canUpdate')->group(function () {
         Route::get('/diary/{id}/edit', [\App\Http\Controllers\DiaryController::class, 'edit'])->name('diary.edit');
         Route::post('/diary/update', [\App\Http\Controllers\DiaryController::class, 'update'])->name('diary.update');
+        Route::post('/diary/destroy', [\App\Http\Controllers\DiaryController::class, 'destroy'])->name('diary.destroy');
     });
 
     Route::middleware('canUpdateComment')->group(function () {

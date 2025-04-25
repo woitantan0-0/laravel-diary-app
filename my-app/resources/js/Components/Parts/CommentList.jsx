@@ -61,25 +61,29 @@ const CommentList = (props) => {
                                     diaryId={comment.diary_id}
                                     auth={props.auth}
                                 />
-                                <Button
-                                    px={3}
-                                    size="xs"
-                                    textStyle="xs"
-                                    className="text-cyan-500 border border-cyan-500 hover:bg-cyan-100"
-                                    onClick={() =>
-                                        handleCommentReply(
-                                            comment.id,
-                                            threadFormStatus &&
-                                                threadFormStatus[comment.id]
-                                                ? threadFormStatus[comment.id]
-                                                : false
-                                        )
-                                    }
-                                >
-                                    {commentText && commentText[comment.id]
-                                        ? commentText[comment.id]
-                                        : "返信する？"}
-                                </Button>
+                                {props.auth.user && (
+                                    <Button
+                                        px={3}
+                                        size="xs"
+                                        textStyle="xs"
+                                        className="text-cyan-500 border border-cyan-500 hover:bg-cyan-100"
+                                        onClick={() =>
+                                            handleCommentReply(
+                                                comment.id,
+                                                threadFormStatus &&
+                                                    threadFormStatus[comment.id]
+                                                    ? threadFormStatus[
+                                                          comment.id
+                                                      ]
+                                                    : false
+                                            )
+                                        }
+                                    >
+                                        {commentText && commentText[comment.id]
+                                            ? commentText[comment.id]
+                                            : "返信する？"}
+                                    </Button>
+                                )}
                             </Box>
                             <ThreadForm
                                 commentId={comment.id}

@@ -28,11 +28,17 @@ class HomeController extends Controller
             ->take(20)
             ->get();
 
+        // セッションに保存されたメッセージを取得
+        $message = session('success');
+        $error_message = session('error');
+
         // ビューにデータを渡す
         return Inertia::render('Home', [
             'popularDiaries' => $popularDiaries,
             'latestDiaries' => $latestDiaries,
             'tab' => 'home',
+            'message' => $message,
+            'error_message' => $error_message,
         ]);
     }
 
