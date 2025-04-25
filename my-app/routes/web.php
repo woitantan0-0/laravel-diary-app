@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware('canUpdateComment')->group(function () {
+        Route::post('/diary/{id}/comment/destroy', [\App\Http\Controllers\CommentController::class, 'destroy'])->name('comment.destroy');
     });
 
     Route::middleware('canUpdateThread')->group(function () {

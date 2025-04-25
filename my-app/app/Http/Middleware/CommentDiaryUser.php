@@ -19,7 +19,7 @@ class CommentDiaryUser
     {
         // 日記の情報を取得
         $comment = Comment::with(['user'])
-            ->where('id', $request->id)
+            ->where('id', $request->comment_id)
             ->firstOrFail();
         // 日記の作成者とログインユーザーが一致する場合
         if ($comment->user_id !== $request->user()->id) {

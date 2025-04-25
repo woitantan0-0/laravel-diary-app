@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, Flex, Link, Text } from "@chakra-ui/react";
 import ThreadList from "@/Components/Parts/ThreadList";
 import ThreadForm from "./ThreadForm";
+import CommentDelete from "./CommentDelete";
 
 const CommentList = (props) => {
     const [threadFormStatus, setThreadFormStatus] = useState({});
@@ -48,14 +49,10 @@ const CommentList = (props) => {
                                         {props.auth.user &&
                                             props.auth.user.id ===
                                                 comment.user_id && (
-                                                <Flex alignItems={"flex-end"}>
-                                                    <Link
-                                                        w={8}
-                                                        className="text-red-500 border-b border-red-500 hover:text-red-300 hover:border-red-300"
-                                                    >
-                                                        削除
-                                                    </Link>
-                                                </Flex>
+                                                <CommentDelete
+                                                    commentId={comment.id}
+                                                    diaryId={comment.diary_id}
+                                                />
                                             )}
                                     </Flex>
                                 </li>
