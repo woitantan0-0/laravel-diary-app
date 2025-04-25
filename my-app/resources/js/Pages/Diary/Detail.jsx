@@ -34,8 +34,8 @@ const DiaryDetail = (props) => {
                         {props.diary.body}
                     </Box>
 
-                    <HStack>
-                        <Box className="flex items-center">
+                    <HStack gap="5">
+                        <HStack className="flex items-center">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="16"
@@ -49,8 +49,8 @@ const DiaryDetail = (props) => {
                             <span className="py-3">
                                 {props.diary.good_count}
                             </span>
-                        </Box>
-                        <Box className="flex items-center">
+                        </HStack>
+                        <HStack className="flex items-center">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="16"
@@ -64,7 +64,7 @@ const DiaryDetail = (props) => {
                             <span className="py-3">
                                 {props.diary.bad_count}
                             </span>
-                        </Box>
+                        </HStack>
                     </HStack>
 
                     {props.auth.user &&
