@@ -22,8 +22,6 @@ class Diary extends Model
         'target_date',
         'is_public',
         'user_id',
-        'good_count',
-        'bad_count',
     ];
 
     /**
@@ -61,6 +59,22 @@ class Diary extends Model
     }
 
     /**
+     * likesテーブルとのリレーション
+     */
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    /**
+     * badsテーブルとのリレーション
+     */
+    public function bads()
+    {
+        return $this->hasMany(Bad::class);
+    }
+
+    /**
      * 日記を登録する
      * 
      * @param DiaryRequest $request
@@ -73,8 +87,6 @@ class Diary extends Model
         $this->target_date = $request->target_date;
         $this->is_public = $request->is_public;
         $this->user_id = $request->user()->id;
-        $this->good_count = 0;
-        $this->bad_count = 0;
         $this->save();
         return $this;
     }

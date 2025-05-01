@@ -26,6 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/diary/store', [\App\Http\Controllers\DiaryController::class, 'store'])->name('diary.store');
     Route::post('/diary/comment/store', [\App\Http\Controllers\CommentController::class, 'store'])->name('comment.store');
     Route::post('/diary/{id}/thread/store', [\App\Http\Controllers\ThreadController::class, 'store'])->name('thread.store');
+    Route::post('/api/likes', [\App\Http\Controllers\DiaryController::class, 'saveLikes']);
 
     Route::middleware('canUpdate')->group(function () {
         Route::get('/diary/{id}/edit', [\App\Http\Controllers\DiaryController::class, 'edit'])->name('diary.edit');

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Diary;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -17,7 +18,8 @@ class HomeController extends Controller
         // 人気の日記一覧を20件取得
         $popularDiaries = Diary::with('user')
             ->where('is_public', 1)
-            ->orderBy('good_count', 'desc')
+            ->withCount(['likes'])
+            ->orderBy('likes_count', 'desc')
             ->take(20)
             ->get();
         
@@ -77,6 +79,7 @@ class HomeController extends Controller
 
         // 検索結果を取得
         $diaries = $query
+            ->withCount(['likes'])
             ->orderBy('created_at', 'desc')
             ->orderBy('id', 'asc')
             ->paginate(10);

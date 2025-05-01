@@ -9,6 +9,10 @@ use App\Models\Diary;
 use App\Models\Comment;
 use Inertia\Inertia;
 use App\Http\Requests\DiaryRequest;
+use App\Http\Requests\LikeBadRequest;
+use App\Models\Bad;
+use App\Models\Like;
+use Illuminate\Support\Facades\Auth;
 
 class DiaryController extends Controller
 {
@@ -22,6 +26,7 @@ class DiaryController extends Controller
         // 対象日記の詳細情報を取得
         $diary = Diary::with(['user'])
             ->where('id', $id)
+            ->withCount(['likes', 'bads'])
             ->firstOrFail();
         
         // 対象日記のコメント一覧を取得
@@ -29,6 +34,24 @@ class DiaryController extends Controller
             ->where('diary_id', $id)
             ->orderBy('created_at', 'desc')
             ->get();
+
+        // いいねバッド情報取得
+        $user = Auth::user();
+        $likeState = "";
+        if ($user) {
+            $like = Like::where('diary_id', $id)
+                ->where('user_id', $user->id)
+                ->count();
+            $bad = Bad::where('diary_id', $id)
+                ->where('user_id', $user->id)
+                ->count();
+            
+            if ($like > 0) {
+                $likeState = "like";
+            } else if ($bad > 0) {
+                $likeState = "bad";
+            }
+        }
         
         // セッションに保存されたメッセージを取得
         $message = session('success');
@@ -38,6 +61,7 @@ class DiaryController extends Controller
         return inertia::render('Diary/Detail', [
             'diary' => $diary,
             'comments' => $comments,
+            'likeState' => $likeState,
             'message' => $message,
             'error_message' => $error_message,
         ]);
@@ -131,6 +155,16 @@ class DiaryController extends Controller
                         // コメント削除
                         $comment->delete();
                     }
+                    // いいね削除
+                    $likes = $diary->likes()->get();
+                    foreach ($likes as $like) {
+                        $like->delete();
+                    }
+                    // バッド削除
+                    $bads = $diary->bads()->get();
+                    foreach ($bads as $bad) {
+                        $bad->delete();
+                    }
                     // 日記削除
                     $diary->delete();
                 }, $retryTimes);
@@ -153,5 +187,59 @@ class DiaryController extends Controller
             return redirect()->route('diary.detail', ['id' => $request->id])
                 ->with('error', '日記の削除に失敗しました。');
         }
+    }
+
+    /**
+     * いいね更新機能
+     * 
+     * @param LikeBadRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function saveLikes(LikeBadRequest $request)
+    {
+        // いいねバッド更新
+        $likeStatus = '';
+        if ($request->like_state == 'like') {
+            $likeModel = new Like();
+            if ($err = $likeModel->updateLike($request, $isAdd)) {
+                return $this->setErrorResponse($err);
+            };
+            $likeStatus = $isAdd ? 'like' : '';
+        } else if ($request->like_state == 'bad') {
+            $badModel = new Bad();
+            if ($err = $badModel->updateBad($request, $isAdd)) {
+                return $this->setErrorResponse($err);
+            };
+            $likeStatus = $isAdd ? 'bad' : '';
+        }
+        // 件数取得
+        $diary = Diary::where('id', $request->diary_id)
+            ->withCount(['likes', 'bads'])
+            ->firstOrFail();
+
+        return response()->json(
+            [
+                'likeState' => $likeStatus,
+                'likesCount' => $diary->likes_count,
+                'badsCount' => $diary->bads_count,
+            ],
+            200,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
+    }
+
+    /**
+     * APIエラーレスポンスセット
+     * @param string $message
+     */
+    private function setErrorResponse($message)
+    {
+        return response()->json(
+            ['message' => $message],
+            500,
+            [],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 }

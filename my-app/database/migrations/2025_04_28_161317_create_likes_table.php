@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('diaries', function (Blueprint $table) {
+        Schema::create('likes', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('body');
-            $table->date('target_date');
-            $table->boolean('is_public')->default(false)->nullable();
+            $table->bigInteger('diary_id')->unsigned();
+            $table->foreign('diary_id')->references('id')->on('diaries');
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('diaries');
+        Schema::dropIfExists('likes');
     }
 };

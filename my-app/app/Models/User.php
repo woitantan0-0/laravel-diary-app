@@ -69,4 +69,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(Thread::class);
     }
+
+    /**
+     * likesテーブルとのリレーション
+     */
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    /**
+     * badsテーブルとのリレーション
+     */
+    public function bads()
+    {
+        return $this->hasMany(Bad::class);
+    }
 }
