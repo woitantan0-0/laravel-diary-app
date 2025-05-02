@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { Button, HStack } from "@chakra-ui/react";
 import axios from "axios";
+import LoginDialog from "./LoginDialog";
+import ErrorDialog from "./ErrorDialog";
 
 const Likes = (props) => {
     const [likes, setLikes] = useState({
         likeState: props.likeState,
         likesCount: props.diary.likes_count,
         badsCount: props.diary.bads_count,
+    });
+    const [open, setOpen] = useState(false);
+    const [openError, setOpenError] = useState({
+        open: false,
+        status: 0,
+        message: "",
     });
 
     const handleClick = (status) => {
@@ -20,21 +28,20 @@ const Likes = (props) => {
                 // アイコンと件数の状態更新
                 setLikes((prevValue) => ({
                     ...prevValue,
-                    likeState: res.data.likeState,
-                    likesCount: res.data.likesCount,
-                    badsCount: res.data.badsCount,
+                    likeState: res.data.likeState ? res.data.likeState : "",
+                    likesCount: res.data.likesCount ? res.data.likesCount : 0,
+                    badsCount: res.data.badsCount ? res.data.badsCount : 0,
                 }));
                 return;
             } catch (e) {
                 console.log(e);
                 e.status == 401
-                    ? alert("ログインしてください！")
-                    : alert(
-                          "エラーが発生しました。ページを更新してください。 [statu code]" +
-                              e.status +
-                              " [error message]" +
-                              e.response.data.message
-                      );
+                    ? setOpen(true)
+                    : setOpenError({
+                          open: true,
+                          status: e.status,
+                          message: e.response.data.message,
+                      });
                 return e;
             }
         })();
@@ -99,6 +106,11 @@ const Likes = (props) => {
                     <span>{likes.badsCount}</span>
                 </HStack>
             </HStack>
+            <LoginDialog open={open} onOpenChange={(e) => setOpen(e.open)} />
+            <ErrorDialog
+                openError={openError}
+                onOpenChangeError={(e) => setOpenError(e.open)}
+            />
         </>
     );
 };
