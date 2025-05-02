@@ -47,7 +47,7 @@ const DiaryList = (props) => {
                             >
                                 {diary.title}
                             </Link>
-                            <p>ひ: {diary.target_date}</p>
+                            <p>ひにち: {diary.target_date}</p>
                             <p>おなまえ: {diary.user.name}</p>
                             {props.isPopular && (
                                 <HStack>

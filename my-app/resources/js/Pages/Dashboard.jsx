@@ -1,26 +1,73 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import React, { useEffect, useState } from "react";
+import MainLayout from "@/Layouts/MainLayout";
+import { Tabs, Box } from "@chakra-ui/react";
+import { Toaster, toaster } from "@/Components/ui/toaster";
+import ListContents from "@/Components/Home/ListContents";
+import { router } from "@inertiajs/react";
 
-export default function Dashboard() {
+const Dashboard = (props) => {
+    // タブの状態を管理するためのuseStateフックを使用
+    const [tab, setTab] = useState(props.tab);
+    // タブの状態を変更するための関数を定義
+    const handleTabChange = (key, newTab) => {
+        setTab(newTab);
+        switch (key) {
+            case "diary":
+                router.get(route("dashboard.index"));
+                break;
+            case "comment":
+                // router.get(route("dashboard.list"));
+                break;
+            default:
+                break;
+        }
+    };
+    useEffect(() => {
+        if (props.message) {
+            toaster.create({
+                title: props.message,
+                type: "success",
+            });
+        }
+        if (props.error_message) {
+            toaster.create({
+                title: props.error_message,
+                type: "error",
+            });
+        }
+    }, [props]);
+
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Dashboard
-                </h2>
-            }
-        >
-            <Head title="Dashboard" />
+        <>
+            <Toaster />
+            <Box pt={5} px={5} bg="cyan.50">
+                <Tabs.Root
+                    maxW="md"
+                    fitted
+                    defaultValue={props.tab}
+                    bg="cyan.50"
+                >
+                    <Tabs.List>
+                        <Tabs.Trigger
+                            value="home"
+                            onClick={handleTabChange.bind(null, "diary")}
+                        >
+                            HOME
+                        </Tabs.Trigger>
+                        <Tabs.Trigger
+                            value="list"
+                            onClick={handleTabChange.bind(null, "comment")}
+                        >
+                            LIST
+                        </Tabs.Trigger>
+                    </Tabs.List>
+                </Tabs.Root>
+            </Box>
 
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
-                            You're logged in!
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </AuthenticatedLayout>
+            <ListContents diaries={props.diaries} search={props.search} />
+        </>
     );
-}
+};
+
+Dashboard.layout = (page) => <MainLayout children={page} title="マイページ" />;
+export default Dashboard;

@@ -148,7 +148,7 @@ const DiaryCreate = (props) => {
 };
 
 DiaryCreate.layout = (page) => (
-    <MainLayout title="にっきをかく。" imagePass="../">
+    <MainLayout children={page} title="にっきをかく。" imagePass="../">
         {page}
     </MainLayout>
 );

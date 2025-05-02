@@ -150,7 +150,7 @@ const DiaryEdit = (props) => {
 };
 
 DiaryEdit.layout = (page) => (
-    <MainLayout title="にっきのへんしゅう。" imagePass="../../">
+    <MainLayout children={page} title="にっきのへんしゅう。" imagePass="../../">
         {page}
     </MainLayout>
 );

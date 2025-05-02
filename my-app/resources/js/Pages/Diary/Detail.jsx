@@ -36,7 +36,7 @@ const DiaryDetail = (props) => {
                             {props.diary.is_public ? "公開" : "非公開"}
                         </Tag.Label>
                     </Tag.Root>
-                    <p>ひ：{props.diary.target_date}</p>
+                    <p>ひにち：{props.diary.target_date}</p>
                     <p>おなまえ：{props.diary.user.name}</p>
                     <Box py={10} style={{ whiteSpace: "pre-line" }}>
                         {props.diary.body}
