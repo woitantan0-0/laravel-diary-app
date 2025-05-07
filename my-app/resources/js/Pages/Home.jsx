@@ -59,7 +59,7 @@ const Home = (props) => {
                             value="list"
                             onClick={handleTabChange.bind(null, "list")}
                         >
-                            LIST
+                            Search
                         </Tabs.Trigger>
                     </Tabs.List>
                 </Tabs.Root>

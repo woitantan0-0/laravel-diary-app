@@ -9,6 +9,10 @@ const MenuHeader = (props) => {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
+    const handleClickHamburger = () => {
+        setShowingNavigationDropdown((previousState) => !previousState);
+    };
+
     return (
         <>
             <Head title={props.title} />
@@ -113,11 +117,7 @@ const MenuHeader = (props) => {
 
                         <div className="-me-2 flex items-center sm:hidden">
                             <button
-                                onClick={() =>
-                                    setShowingNavigationDropdown(
-                                        (previousState) => !previousState
-                                    )
-                                }
+                                onClick={handleClickHamburger}
                                 className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none"
                             >
                                 <svg
@@ -160,15 +160,6 @@ const MenuHeader = (props) => {
                         " sm:hidden"
                     }
                 >
-                    {/* <div className="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink
-                            href={route("dashboard")}
-                            active={route().current("dashboard")}
-                        >
-                            Dashboard
-                        </ResponsiveNavLink>
-                    </div> */}
-
                     <div className="border-t border-gray-200 pb-1 pt-4">
                         <div className="px-4">
                             <div className="text-base font-medium text-gray-800">
@@ -185,13 +176,22 @@ const MenuHeader = (props) => {
 
                         {userData.auth.user ? (
                             <div className="mt-3 space-y-1">
-                                <ResponsiveNavLink href={route("diary.create")}>
+                                <ResponsiveNavLink
+                                    href={route("diary.create")}
+                                    onClick={handleClickHamburger}
+                                >
                                     日記投稿
                                 </ResponsiveNavLink>
-                                <ResponsiveNavLink href={route("dashboard")}>
+                                <ResponsiveNavLink
+                                    href={route("dashboard")}
+                                    onClick={handleClickHamburger}
+                                >
                                     マイページ
                                 </ResponsiveNavLink>
-                                <ResponsiveNavLink href={route("profile.edit")}>
+                                <ResponsiveNavLink
+                                    href={route("profile.edit")}
+                                    onClick={handleClickHamburger}
+                                >
                                     プロフィール設定
                                 </ResponsiveNavLink>
                                 <ResponsiveNavLink

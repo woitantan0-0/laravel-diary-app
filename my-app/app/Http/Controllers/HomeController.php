@@ -7,6 +7,7 @@ use App\Models\Diary;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -73,7 +74,10 @@ class HomeController extends Controller
             $query->where(function ($query) use ($search) {
                 $query->where('title', 'like', "%{$search}%")
                       ->orWhere('body', 'like', "%{$search}%")
-                      ->orWhere('target_date', 'like', "%{$search}%");
+                      ->orWhere('target_date', 'like', "%{$search}%")
+                      ->orWhereHas('user', function($query) use ($search) {
+                        $query->Where('name', 'like', "%{$search}%");
+                    });
             });
         }
 

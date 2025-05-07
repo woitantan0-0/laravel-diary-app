@@ -28,6 +28,12 @@ const ListContents = (props) => {
                         value={searchText}
                     />
                 </InputGroup>
+                <ul className="text-gray-500 pt-3">
+                    <li>※検索したい文字を入力してね</li>
+                    <li>※タイトル、日付、本文、投稿者名で検索できるよ</li>
+                    <li>※日付は`2025-05-07`のように入力してね</li>
+                    <li>※入力後、エンターを押すと検索されるよ</li>
+                </ul>
             </Box>
             <DiaryList
                 title="日記一覧"
