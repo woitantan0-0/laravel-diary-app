@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
 import MainLayout from "@/Layouts/MainLayout";
-import { Tabs, Box } from "@chakra-ui/react";
+import H1Parts from "@/Components/Parts/H1Parts";
+import MyDiaryList from "@/Components/Parts/MyDiaryList";
+import MyCommentList from "@/Components/Parts/MyCommentList";
+import { Tabs, Box, Input, InputGroup } from "@chakra-ui/react";
 import { Toaster, toaster } from "@/Components/ui/toaster";
-import ListContents from "@/Components/Home/ListContents";
 import { router } from "@inertiajs/react";
+import { LuSearch } from "react-icons/lu";
 
 const Dashboard = (props) => {
-    // タブの状態を管理するためのuseStateフックを使用
-    const [tab, setTab] = useState(props.tab);
-    // タブの状態を変更するための関数を定義
-    const handleTabChange = (key, newTab) => {
-        setTab(newTab);
-        switch (key) {
-            case "diary":
-                router.get(route("dashboard.index"));
-                break;
-            case "comment":
-                // router.get(route("dashboard.list"));
-                break;
-            default:
-                break;
+    // 検索機能
+    const [searchText, setSearchText] = React.useState(props.search || "");
+    const handleSearchEnter = (e) => {
+        if (e.key === "Enter") {
+            const searchValue = e.target.value;
+            if (searchValue) {
+                router.get(route("dashboard"), { search: searchValue });
+            } else {
+                router.get(route("dashboard"));
+            }
         }
     };
+
     useEffect(() => {
         if (props.message) {
             toaster.create({
@@ -40,31 +40,43 @@ const Dashboard = (props) => {
     return (
         <>
             <Toaster />
-            <Box pt={5} px={5} bg="cyan.50">
-                <Tabs.Root
-                    maxW="md"
-                    fitted
-                    defaultValue={props.tab}
-                    bg="cyan.50"
-                >
-                    <Tabs.List>
-                        <Tabs.Trigger
-                            value="home"
-                            onClick={handleTabChange.bind(null, "diary")}
-                        >
-                            HOME
-                        </Tabs.Trigger>
-                        <Tabs.Trigger
-                            value="list"
-                            onClick={handleTabChange.bind(null, "comment")}
-                        >
-                            LIST
-                        </Tabs.Trigger>
-                    </Tabs.List>
-                </Tabs.Root>
+            <H1Parts h1Text={"マイページ"} />
+            <Box pt={10} px={5}>
+                <InputGroup flex="1" startElement={<LuSearch />}>
+                    <Input
+                        rounded={6}
+                        placeholder="さがすよ。エンターおしてね。"
+                        onChange={(e) => setSearchText(e.target.value)}
+                        onKeyDown={handleSearchEnter}
+                        value={searchText}
+                    />
+                </InputGroup>
+                <ul className="text-gray-500 pt-3">
+                    <li>※検索したい文字を入力してね</li>
+                    <li>※タイトル、日付、本文で検索できるよ</li>
+                    <li>※日付は`2025-05-07`のように入力してね</li>
+                    <li>※入力後、エンターを押すと検索されるよ</li>
+                </ul>
             </Box>
 
-            <ListContents diaries={props.diaries} search={props.search} />
+            <Box pt={5} px={5}>
+                <Tabs.Root lazyMount unmountOnExit defaultValue="tab-1">
+                    <Tabs.List className="border-b border-gray-200 bg-white my-3">
+                        <Tabs.Trigger value="tab-1" className="px-5">
+                            投稿日記一覧
+                        </Tabs.Trigger>
+                        <Tabs.Trigger value="tab-2" className="px-5">
+                            コメント一覧
+                        </Tabs.Trigger>
+                    </Tabs.List>
+                    <Tabs.Content value="tab-1">
+                        <MyDiaryList diaries={props.diaries} />
+                    </Tabs.Content>
+                    <Tabs.Content value="tab-2">
+                        <MyCommentList comments={props.comments} />
+                    </Tabs.Content>
+                </Tabs.Root>
+            </Box>
         </>
     );
 };

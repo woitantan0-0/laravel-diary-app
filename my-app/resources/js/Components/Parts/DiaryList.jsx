@@ -44,7 +44,7 @@ const DiaryList = (props) => {
                             title={diary.title}
                             target_date={diary.target_date}
                             user={diary.user}
-                            isPopular={diary.isPopular}
+                            isPopular={props.isPopular}
                             likes_count={diary.likes_count}
                         />
                     ))}
