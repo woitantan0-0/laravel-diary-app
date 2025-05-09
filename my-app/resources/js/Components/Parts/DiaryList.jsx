@@ -43,6 +43,7 @@ const DiaryList = (props) => {
                             id={diary.id}
                             title={diary.title}
                             target_date={diary.target_date}
+                            is_public={diary.is_public}
                             user={diary.user}
                             isPopular={props.isPopular}
                             likes_count={diary.likes_count}

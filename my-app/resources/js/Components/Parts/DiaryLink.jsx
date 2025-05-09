@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "@inertiajs/react";
-import { HStack } from "@chakra-ui/react";
+import { HStack, Tag } from "@chakra-ui/react";
 
 const DiaryLink = (props) => {
     return (
@@ -11,7 +11,18 @@ const DiaryLink = (props) => {
             >
                 {props.title}
             </Link>
-            <p>ひにち: {props.target_date}</p>
+            <HStack>
+                {props.is_public ? (
+                    <Tag.Root size="md" variant="subtle" colorPalette="cyan">
+                        <Tag.Label>公開</Tag.Label>
+                    </Tag.Root>
+                ) : (
+                    <Tag.Root size="md" variant="subtle" colorPalette="gray">
+                        <Tag.Label>非公開</Tag.Label>
+                    </Tag.Root>
+                )}
+                <p>ひにち: {props.target_date}</p>
+            </HStack>
             {props.user && <p>おなまえ: {props.user.name}</p>}
             {props.isPopular && (
                 <HStack>

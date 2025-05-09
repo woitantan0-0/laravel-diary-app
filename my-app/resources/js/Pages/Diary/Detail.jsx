@@ -31,11 +31,23 @@ const DiaryDetail = (props) => {
             <Box bg="pink.50">
                 <H1Parts h1Text={props.diary.title} />
                 <Box px={5} py={20}>
-                    <Tag.Root size="md" variant="subtle" colorPalette="cyan">
-                        <Tag.Label>
-                            {props.diary.is_public ? "公開" : "非公開"}
-                        </Tag.Label>
-                    </Tag.Root>
+                    {props.diary.is_public ? (
+                        <Tag.Root
+                            size="md"
+                            variant="subtle"
+                            colorPalette="cyan"
+                        >
+                            <Tag.Label>公開</Tag.Label>
+                        </Tag.Root>
+                    ) : (
+                        <Tag.Root
+                            size="md"
+                            variant="subtle"
+                            colorPalette="gray"
+                        >
+                            <Tag.Label>非公開</Tag.Label>
+                        </Tag.Root>
+                    )}
                     <p>ひにち：{props.diary.target_date}</p>
                     <p>おなまえ：{props.diary.user.name}</p>
                     <Box py={10} style={{ whiteSpace: "pre-line" }}>
