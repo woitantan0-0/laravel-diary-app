@@ -69,7 +69,7 @@ const MyCommentList = (props) => {
                     )}
                 </>
             ) : (
-                <Box p={5}>投稿はまだありません</Box>
+                <Box p={5}>コメントはまだありません</Box>
             )}
         </>
     );
