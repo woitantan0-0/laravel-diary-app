@@ -1,22 +1,76 @@
 import React, { useEffect, useState } from "react";
-import { Tabs, Box, Input, InputGroup } from "@chakra-ui/react";
+import { Button, Box } from "@chakra-ui/react";
+import CommentLink from "./CommentLink";
+import ThreadLink from "./ThreadLink";
 
 const MyCommentList = (props) => {
     // もっと見る
-    const [loadIndex, setLoadIndex] = useState(4);
+    const [loadIndex, setLoadIndex] = useState(5);
     const [isEmpty, setIsEmpty] = useState(false);
-    const [currentLink, setCurrentLink] = useState([]);
+    const [currentLink, setCurrentLink] = useState(props.comments);
     const handleDisplayMore = () => {
-        if (loadIndex > currentLink.length) {
+        if (loadIndex >= currentLink.length) {
             setIsEmpty(true);
         } else {
-            setLoadIndex(loadIndex + 4);
+            setLoadIndex(loadIndex + 5);
         }
     };
+    useEffect(() => {
+        if (loadIndex >= currentLink.length) {
+            setIsEmpty(true);
+        }
+    }, [loadIndex]);
 
     return (
         <>
-            <Box>tab2</Box>
+            {currentLink && currentLink.length > 0 ? (
+                <>
+                    <ul className="p-3">
+                        {currentLink.slice(0, loadIndex).map((comment) => (
+                            <li
+                                className="border-b border-gray-300 pb-3 mb-3"
+                                key={comment.id}
+                            >
+                                <CommentLink
+                                    id={comment.id}
+                                    comment={comment.comment}
+                                    created_at={comment.created_at}
+                                    diary_id={comment.diary_id}
+                                    user_id={comment.user_id}
+                                    diary={comment.diary}
+                                />
+                                {comment.threads &&
+                                    comment.threads.length > 0 &&
+                                    comment.threads.map((thread) => (
+                                        <ThreadLink
+                                            key={thread.id}
+                                            comment={thread.comment}
+                                            created_at={thread.created_at}
+                                            diary_id={comment.diary_id}
+                                            user_id={thread.user_id}
+                                        />
+                                    ))}
+                            </li>
+                        ))}
+                    </ul>
+
+                    {!isEmpty && (
+                        <Box className="text-center">
+                            <Button
+                                disabled={isEmpty ? true : false}
+                                onClick={handleDisplayMore}
+                                variant="contained"
+                                px={3}
+                                className="inline-flex items-center rounded-md border border-transparent bg-cyan-600 px-4 py-2 font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 active:bg-cyan-700"
+                            >
+                                もっと見る
+                            </Button>
+                        </Box>
+                    )}
+                </>
+            ) : (
+                <Box p={5}>投稿はまだありません</Box>
+            )}
         </>
     );
 };

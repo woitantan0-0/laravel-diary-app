@@ -40,11 +40,27 @@ class MypageController extends Controller
             ->get();
 
         // 自分のコメント一覧を取得
-        $query = Comment::with('threads')
-            ->where('user_id', $userId)
-            ->orWhereHas('threads', function($query) use ($userId) {
-                $query->Where('user_id', $userId);
+        $query = Comment::with(['threads' => function ($query) use ($userId, $search) {
+            $query->where('user_id', $userId);
+            if ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->Where('comment', 'like', "%{$search}%")->orWhere('created_at', 'like', "%{$search}%");
+                });
+            }
+        }, 'diary'])->where('user_id', $userId);
+        if ($search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('comment', 'like', "%{$search}%")->orWhere('created_at', 'like', "%{$search}%");
             });
+        }
+        $query->orWhereHas('threads', function($query) use ($userId, $search) {
+            $query->Where('user_id', $userId);
+            if ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->Where('comment', 'like', "%{$search}%")->orWhere('created_at', 'like', "%{$search}%");
+                });
+            }
+        });
         // 検索結果を取得
         $comments = $query->orderBy('created_at', 'desc')
             ->orderBy('id', 'asc')
@@ -53,7 +69,7 @@ class MypageController extends Controller
         // ビューにデータを渡す
         return Inertia::render('Dashboard', [
             'diaries' => $diaries,
-            'comment' => $comments,
+            'comments' => $comments,
             'search' => $search,
         ]);
     }

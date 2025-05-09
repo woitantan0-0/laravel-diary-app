@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Button, Box, Input, InputGroup } from "@chakra-ui/react";
+import { Button, Box } from "@chakra-ui/react";
 import DiaryLink from "./DiaryLink";
 
 const MyDiaryList = (props) => {
     // もっと見る
-    const [loadIndex, setLoadIndex] = useState(5);
+    const [loadIndex, setLoadIndex] = useState(10);
     const [isEmpty, setIsEmpty] = useState(false);
     const [currentLink, setCurrentLink] = useState(props.diaries);
     const handleDisplayMore = () => {
         if (loadIndex >= currentLink.length) {
             setIsEmpty(true);
         } else {
-            setLoadIndex(loadIndex + 5);
+            setLoadIndex(loadIndex + 10);
         }
     };
 
