@@ -18,7 +18,7 @@ const ListContents = (props) => {
     };
     return (
         <>
-            <Box py={10} px={10}>
+            <Box pt={10} px={10}>
                 <InputGroup flex="1" startElement={<LuSearch />}>
                     <Input
                         rounded={6}

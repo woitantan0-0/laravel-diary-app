@@ -56,14 +56,14 @@ const DiaryList = (props) => {
             )}
 
             {props.pageData && props.pageData.links.length > 0 && (
-                <HStack px={5}>
+                <HStack px={3}>
                     {props.pageData.links.map((link, index) => (
                         <Button
                             key={index}
                             onClick={() => handlePageCange(link.url)}
                             bg={link.active ? "cyan.200" : "gray.100"}
                             variant="solid"
-                            px={5}
+                            px={4}
                         >
                             {getButtonLabel(link.label)}
                         </Button>
