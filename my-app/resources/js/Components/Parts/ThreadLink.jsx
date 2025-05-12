@@ -13,7 +13,7 @@ const ThreadLink = (props) => {
                 <Box
                     ml={4}
                     pl={4}
-                    my={5}
+                    my={3}
                     className="border-l-4 border-gray-300"
                 >
                     <Link

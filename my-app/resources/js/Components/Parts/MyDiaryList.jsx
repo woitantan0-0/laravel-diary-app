@@ -25,7 +25,7 @@ const MyDiaryList = (props) => {
         <>
             {props.diaries && props.diaries.length > 0 ? (
                 <>
-                    <ul className="p-3">
+                    <div className="py-3">
                         {currentLink.slice(0, loadIndex).map((diary) => (
                             <DiaryLink
                                 key={diary.id}
@@ -39,7 +39,7 @@ const MyDiaryList = (props) => {
                                 bads_count={diary.bads_count}
                             />
                         ))}
-                    </ul>
+                    </div>
 
                     {!isEmpty && (
                         <Box className="text-center">

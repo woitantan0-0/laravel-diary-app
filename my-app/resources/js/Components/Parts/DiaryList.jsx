@@ -37,7 +37,7 @@ const DiaryList = (props) => {
             </Flex>
 
             {props.diaries && props.diaries.length > 0 ? (
-                <ul className="p-3">
+                <div className="p-3">
                     {props.diaries.map((diary) => (
                         <DiaryLink
                             key={diary.id}
@@ -50,7 +50,7 @@ const DiaryList = (props) => {
                             likes_count={diary.likes_count}
                         />
                     ))}
-                </ul>
+                </div>
             ) : (
                 <Box p={5}>投稿はまだありません</Box>
             )}
