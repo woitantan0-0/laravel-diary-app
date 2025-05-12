@@ -47,6 +47,7 @@ const MyCommentList = (props) => {
                                             comment={thread.comment}
                                             created_at={thread.created_at}
                                             diary_id={comment.diary_id}
+                                            comment_id={thread.comment_id}
                                             user_id={thread.user_id}
                                         />
                                     ))}

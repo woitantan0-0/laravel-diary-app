@@ -5,11 +5,13 @@ import { Box } from "@chakra-ui/react";
 
 const CommentLink = (props) => {
     const userData = usePage().props;
+    const pathname = location.pathname.split("/")[1];
+
     return (
         <Box>
             <Box>
                 <Link
-                    href={`/diary/${props.diary_id}`}
+                    href={`/diary/${props.diary_id}?ref=${pathname}`}
                     className="text-cyan-600 my-3 hover:text-cyan-300"
                 >
                     日記：{props.diary.title}
@@ -18,7 +20,7 @@ const CommentLink = (props) => {
             {userData.auth.user.id == props.user_id && (
                 <>
                     <Link
-                        href={`/diary/${props.diary_id}`}
+                        href={`/diary/${props.diary_id}?ref=${pathname}#comment-${props.id}`}
                         className="text-black my-3 hover:text-pink-300"
                     >
                         <Box

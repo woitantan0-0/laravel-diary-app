@@ -5,6 +5,8 @@ import { Box } from "@chakra-ui/react";
 
 const ThreadLink = (props) => {
     const userData = usePage().props;
+    const pathname = location.pathname.split("/")[1];
+
     return (
         <>
             {userData.auth.user.id == props.user_id && (
@@ -15,7 +17,7 @@ const ThreadLink = (props) => {
                     className="border-l-4 border-gray-300"
                 >
                     <Link
-                        href={`/diary/${props.diary_id}`}
+                        href={`/diary/${props.diary_id}?ref=${pathname}#comment-${props.comment_id}`}
                         className="text-black my-3 hover:text-pink-300"
                     >
                         <Box

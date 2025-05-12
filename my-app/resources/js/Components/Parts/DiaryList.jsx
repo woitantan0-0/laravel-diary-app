@@ -29,6 +29,7 @@ const DiaryList = (props) => {
                     src="./image/iconGame.jpeg"
                     className="p-2 flex-fill"
                     alt="logo"
+                    style={{ width: "70px" }}
                 />
                 <h2 className="text-3xl font-bold text-black py-3">
                     {props.title}

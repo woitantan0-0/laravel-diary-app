@@ -3,10 +3,12 @@ import { Link } from "@inertiajs/react";
 import { HStack, Tag } from "@chakra-ui/react";
 
 const DiaryLink = (props) => {
+    const pathname = location.pathname.split("/")[1];
+
     return (
         <li className="border-b border-gray-300 pb-3 mb-3">
             <Link
-                href={`/diary/${props.id}`}
+                href={`/diary/${props.id}?ref=${pathname}`}
                 className="text-2xl font-bold text-black my-3 hover:text-pink-300"
             >
                 {props.title}

@@ -25,7 +25,11 @@ const CommentList = (props) => {
             {props.comments.length > 0 ? (
                 <ul className="pl-1">
                     {props.comments.map((comment) => (
-                        <Box key={comment.id} pb={10}>
+                        <Box
+                            key={comment.id}
+                            id={`comment-${comment.id}`}
+                            pb={10}
+                        >
                             <Box>
                                 <li className="border-b border-gray-300 pb-3 mb-3">
                                     <Flex gap="4">
