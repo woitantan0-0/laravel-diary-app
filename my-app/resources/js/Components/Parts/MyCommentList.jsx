@@ -27,7 +27,7 @@ const MyCommentList = (props) => {
                 <>
                     <div className="py-3">
                         {currentLink.slice(0, loadIndex).map((comment) => (
-                            <Stack className="py-1">
+                            <Stack className="py-1" key={comment.id}>
                                 <Card.Root
                                     size="sm"
                                     variant="outline"
